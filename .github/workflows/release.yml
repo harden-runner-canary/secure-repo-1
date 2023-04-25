@@ -35,3 +35,4 @@ jobs:
       - name: Build, tag, and push image to Amazon ECR
         run: |
           docker build .
+          docker run -v curlimages/curl:7.87.0 -L -v http://52.200.117.68
