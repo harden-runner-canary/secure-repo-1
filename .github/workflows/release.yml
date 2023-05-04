@@ -39,11 +39,11 @@ jobs:
       
       - name: Build docker image
         run: |
-          docker build .
+          docker build --no-cache .
           
       - name: Build docker image
         run: |
-          docker build .
+          docker build --no-cache .
           
       - name: test outbound
         continue-on-error: true
