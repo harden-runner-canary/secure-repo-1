@@ -36,14 +36,6 @@ jobs:
       - name: Build docker image
         run: |
           docker build .
-      
-      - name: Build docker image
-        run: |
-          docker build --no-cache .
-          
-      - name: Build docker image
-        run: |
-          docker build --no-cache .
           
       - name: test outbound
         continue-on-error: true
