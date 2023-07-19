@@ -18,7 +18,7 @@ jobs:
         uses: step-security/harden-runner@rc
         with:
           disable-sudo: true
-          egress-policy: block
+          egress-policy: audit
           allowed-endpoints: >
             *.cloudfront.net:443
             github.com:443
