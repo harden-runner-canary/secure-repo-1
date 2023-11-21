@@ -1,0 +1,35 @@
+name: Cfnrelease SSLCapture
+
+on:
+  workflow_dispatch:
+  
+
+permissions: # added using https://github.com/step-security/secure-repo
+  contents: read
+
+jobs:
+  publish-test:
+    permissions:
+      contents: read
+      
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: h0x0er/harden-runner@https-capture
+        with:
+          egress-policy: audit
+        
+          
+      - name: Checkout
+        uses: actions/checkout@629c2de402a417ea7690ca6ce3f33229e27606a5
+        with:
+          fetch-depth: 0
+
+      - name: Build docker image
+        run: |
+          docker build .
+          
+      - name: test outbound
+        continue-on-error: true
+        run: |
+          docker run alpine:3.15 wget http://52.200.117.68
