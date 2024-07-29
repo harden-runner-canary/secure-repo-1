@@ -1,0 +1,43 @@
+name: Cfnrelease Telemetry Disabled
+
+on:
+  workflow_dispatch:
+  
+
+permissions: # added using https://github.com/step-security/secure-repo
+  contents: read
+
+jobs:
+  publish-test:
+    permissions:
+      contents: read
+      
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@v2.9.0
+        with:
+          disable-telemetry: true
+          egress-policy: block
+          allowed-endpoints: >
+            *.cloudfront.net:443
+            github.com:443
+            *.docker.com:443
+            *.docker.io:443
+            *.golang.org:443
+            public.ecr.aws:443
+            storage.googleapis.com:443
+          
+      - name: Checkout
+        uses: actions/checkout@629c2de402a417ea7690ca6ce3f33229e27606a5
+        with:
+          fetch-depth: 0
+
+      - name: Build docker image
+        run: |
+          docker build .
+          
+      - name: test outbound
+        continue-on-error: true
+        run: |
+          docker run alpine:3.15 wget http://52.200.117.68
