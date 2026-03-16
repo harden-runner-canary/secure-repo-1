@@ -1,12 +1,25 @@
 name: PoC 1
 on: [workflow_dispatch]
 jobs:
-  bypass-firewall:
+  bypass-firewall-with-rc:
     runs-on: ubuntu-latest
     steps:
-
-
       - uses: step-security/harden-runner@rc
+        with:
+          egress-policy: block
+          disable-sudo: true
+          allowed-endpoints: >
+            github.com:443
+
+
+      - name: Test bypass # should fail
+        run: dig facebook.com @8.8.8.8 +tcp
+
+
+  bypass-firewall-with-latest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: step-security/harden-runner@v2.15.1
         with:
           egress-policy: block
           disable-sudo: true
