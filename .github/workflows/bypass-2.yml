@@ -4,8 +4,6 @@ jobs:
   bypass-firewall-with-rc:
     runs-on: ubuntu-latest
     steps:
-
-
       - uses: step-security/harden-runner@rc
         with:
           egress-policy: block
@@ -18,4 +16,21 @@ jobs:
 
       - name: Test bypass
         run: |
-          python3 http.py
+          python3 .github/http.py
+
+  bypass-firewall-with-latest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: step-security/harden-runner@v2.15.1
+        with:
+          egress-policy: block
+          disable-sudo: true
+          allowed-endpoints: >
+            github.com:443
+
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Test bypass
+        run: |
+          python3 .github/http.py
