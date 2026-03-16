@@ -1,4 +1,4 @@
-name: PoC 
+name: PoC 1
 on: [workflow_dispatch]
 jobs:
   bypass-firewall:
