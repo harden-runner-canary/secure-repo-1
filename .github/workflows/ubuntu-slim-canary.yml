@@ -1,0 +1,19 @@
+name: ubuntu-slim canary (PR #657)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04-slim
+    steps:
+      - name: Harden Runner
+        uses: devantler/harden-runner@fix/ubuntu-slim-user-env
+        with:
+          egress-policy: audit
+
+      - name: Sanity step
+        run: echo "ubuntu-slim canary reached the next step"
