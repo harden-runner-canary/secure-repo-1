@@ -11,6 +11,9 @@ timeout-minutes: 10
 
 engine: copilot
 
+features:
+  copilot-requests: true
+
 pre-steps:
   - name: Harden Runner
     uses: step-security/harden-runner@v2
