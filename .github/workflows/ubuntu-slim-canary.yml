@@ -7,7 +7,7 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  test-ubuntu-slim:
     runs-on: ubuntu-slim
     steps:
       - name: Harden Runner
@@ -17,3 +17,14 @@ jobs:
 
       - name: Sanity step
         run: echo "ubuntu-slim canary reached the next step"
+
+  test-ubuntu-latest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: devantler/harden-runner@fix/ubuntu-slim-user-env
+        with:
+          egress-policy: audit
+
+      - name: Sanity step
+        run: echo "ubuntu-latest regression check reached the next step"
