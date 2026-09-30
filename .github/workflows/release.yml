@@ -44,10 +44,9 @@ jobs:
           docker run alpine:3.15 wget http://52.200.117.68
 
   publish-test-arm:
-    permissions:
-      contents: read
-      
+    name: Publish Test ARM64
     runs-on: ubuntu-24.04-arm
+
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@rc
@@ -63,17 +62,37 @@ jobs:
             public.ecr.aws:443
             storage.googleapis.com:443
             production.cloudfront.docker.com:443
-          
+
       - name: Checkout
         uses: actions/checkout@629c2de402a417ea7690ca6ce3f33229e27606a5
         with:
           fetch-depth: 0
 
-      - name: Build docker image
+      - name: Show runner architecture
         run: |
-          docker build .
-          
-      - name: test outbound
+          uname -a
+          uname -m
+          docker version
+
+      - name: Build ARM64 Docker image
+        run: |
+          docker build \
+            --platform linux/arm64 \
+            --tag publish-test-arm:latest \
+            .
+
+      - name: Inspect image architecture
+        run: |
+          docker image inspect publish-test-arm:latest \
+            --format='OS={{.Os}} ARCH={{.Architecture}}'
+
+      - name: Test image
+        run: |
+          docker run --rm publish-test-arm:latest
+
+      - name: Test outbound
         continue-on-error: true
         run: |
-          docker run alpine:3.15 wget http://52.200.117.68
+          docker run --rm \
+            alpine:3.15 \
+            wget -S -O /dev/null http://52.200.117.68
