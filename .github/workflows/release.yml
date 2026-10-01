@@ -80,6 +80,7 @@ jobs:
         run: |
           docker build \
             --platform linux/arm64 \
+            --file Dockerfile.arm64 \
             --tag publish-test:arm64 \
             .
   
